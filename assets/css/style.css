@@ -48,29 +48,85 @@ body.landing {
   flex-wrap: wrap;
 }
 
-/* ---------------- BUTTONS ---------------- */
+/* ---------------- BUTTONS (Unified) ---------------- */
+.btn,
+.action-btn,
+.add-btn,
+.submit-btn,
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
 .btn {
   background: #2e7d32;
   color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
-.btn:hover {
+.btn:hover,
+.action-btn:hover,
+.add-btn:hover,
+.submit-btn:hover {
   background: #1b5e20;
 }
 
 .btn.secondary {
   background: #64b5f6;
+  color: white;
 }
-
 .btn.secondary:hover {
   background: #1976d2;
+}
+
+/* Button color variations */
+.btn-blue,
+.submit-btn.blue,
+.edit-btn {
+  background: #42a5f5;
+  color: white;
+}
+.btn-blue:hover,
+.submit-btn.blue:hover,
+.edit-btn:hover {
+  background: #1976d2;
+}
+
+.btn-green,
+.save-btn {
+  background: #43a047;
+  color: white;
+}
+.btn-green:hover,
+.save-btn:hover {
+  background: #2e7d32;
+}
+
+.btn-red,
+.delete-btn {
+  background: #e53935;
+  color: white;
+}
+.btn-red:hover,
+.delete-btn:hover {
+  background: #b71c1c;
+}
+
+.btn-gray,
+.cancel-btn {
+  background: #757575;
+  color: white;
+}
+.btn-gray:hover,
+.cancel-btn:hover {
+  background: #424242;
 }
 
 /* ---------------- CONTAINER ---------------- */
@@ -246,31 +302,6 @@ body.landing {
   box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
 }
 
-.add-btn,
-.submit-btn {
-  background: #2e7d32;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.add-btn:hover,
-.submit-btn:hover {
-  background: #1b5e20;
-}
-
-.submit-btn.blue {
-  background: #1976d2;
-}
-
-.submit-btn.blue:hover {
-  background: #1565c0;
-}
-
 /* ---------------- TABLES ---------------- */
 .table-container {
   overflow-x: auto;
@@ -335,19 +366,6 @@ tbody tr:hover {
   gap: 8px;
 }
 
-.delete-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #d32f2f;
-  font-size: 18px;
-}
-
-.delete-btn:hover {
-  background: #ffebee;
-  border-radius: 4px;
-}
-
 /* ---------------- CHARTS ---------------- */
 .chart-section {
   margin-bottom: 40px;
@@ -369,23 +387,9 @@ tbody tr:hover {
 
 /* ---------------- RESPONSIVE ---------------- */
 @media (max-width: 768px) {
-  .container {
-    padding: 15px;
-  }
-
-  .header h1 {
-    font-size: 1.5em;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tabs {
-    overflow-x: auto;
-  }
-
-  .stat-value {
-    font-size: 22px;
-  }
+  .container { padding: 15px; }
+  .header h1 { font-size: 1.5em; }
+  .form-grid { grid-template-columns: 1fr; }
+  .tabs { overflow-x: auto; }
+  .stat-value { font-size: 22px; }
 }

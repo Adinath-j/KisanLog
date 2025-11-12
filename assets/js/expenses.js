@@ -1,7 +1,7 @@
 (function () {
   // Ensure global data arrays exist
-  window.expenses = window.expenses || [];
-  window.yields = window.yields || [];
+  window.expenses = JSON.parse(localStorage.getItem("farmExpenses") || "[]");
+  window.yields = JSON.parse(localStorage.getItem("farmYields") || "[]");
 
   // 🔹 Toggle Expense Form
   function toggleExpenseForm() {
@@ -52,17 +52,77 @@
   // 🔹 Delete Expense
   function deleteExpense(id) {
     if (!confirm("Are you sure you want to delete this expense?")) return;
-
     window.expenses = window.expenses.filter(e => e.id !== id);
     saveData();
     renderExpensesTable();
     updateDashboard();
   }
 
+  // 🔹 Edit Expense
+  function editExpense(id) {
+    const tbody = document.getElementById("expensesTableBody");
+    const expense = window.expenses.find(e => e.id === id);
+    if (!expense || !tbody) return;
+
+    // Replace row with editable inputs
+    tbody.innerHTML = window.expenses
+      .map(e => {
+        if (e.id === id) {
+          return `
+          <tr>
+            <td><input type="date" id="editDate" value="${e.date}" /></td>
+            <td><input type="text" id="editCrop" value="${e.crop}" /></td>
+            <td><input type="text" id="editCategory" value="${e.category}" /></td>
+            <td><input type="text" id="editDescription" value="${e.description || ""}" /></td>
+            <td><input type="number" id="editAmount" value="${e.amount}" /></td>
+            <td style="text-align:center;">
+              <button class="save-btn" onclick="saveEditedExpense(${e.id})">💾</button>
+              <button class="cancel-btn" onclick="renderExpensesTable()">❌</button>
+            </td>
+          </tr>`;
+        } else {
+          return `
+          <tr>
+            <td>${e.date}</td>
+            <td><strong>${e.crop}</strong></td>
+            <td><span class="category-badge">${e.category}</span></td>
+            <td>${e.description || "-"}</td>
+            <td style="text-align:right;">₹${e.amount.toFixed(2)}</td>
+            <td style="text-align:center;">
+              <button class="edit-btn" onclick="editExpense(${e.id})">✏️</button>
+              <button class="delete-btn" onclick="deleteExpense(${e.id})">🗑️</button>
+            </td>
+          </tr>`;
+        }
+      })
+      .join("");
+  }
+
+  // 🔹 Save Edited Expense
+  function saveEditedExpense(id) {
+    const crop = document.getElementById("editCrop").value.trim();
+    const category = document.getElementById("editCategory").value.trim();
+    const description = document.getElementById("editDescription").value.trim();
+    const amount = parseFloat(document.getElementById("editAmount").value);
+    const date = document.getElementById("editDate").value;
+
+    if (!crop || isNaN(amount)) {
+      alert("⚠️ Please fill all fields correctly.");
+      return;
+    }
+
+    const index = window.expenses.findIndex(e => e.id === id);
+    if (index !== -1) {
+      window.expenses[index] = { id, crop, category, description, amount, date };
+      saveData();
+      renderExpensesTable();
+      updateDashboard();
+    }
+  }
+
   // 🔹 Render Table
   function renderExpensesTable() {
     const tbody = document.getElementById("expensesTableBody");
-
     if (!tbody) return;
 
     if (window.expenses.length === 0) {
@@ -80,6 +140,7 @@
           <td>${exp.description || "-"}</td>
           <td style="text-align:right;">₹${exp.amount.toFixed(2)}</td>
           <td style="text-align:center;">
+            <button class="edit-btn" onclick="editExpense(${exp.id})">✏️</button>
             <button class="delete-btn" onclick="deleteExpense(${exp.id})">🗑️</button>
           </td>
         </tr>`
@@ -87,30 +148,33 @@
       .join("");
   }
 
-  // 🔹 Save Data to LocalStorage
+  // 🔹 Save Data
   function saveData() {
     localStorage.setItem("farmExpenses", JSON.stringify(window.expenses));
     localStorage.setItem("farmYields", JSON.stringify(window.yields));
   }
 
-  // 🔹 Update Dashboard Values
+  // 🔹 Update Dashboard
   function updateDashboard() {
-    if (!document.getElementById("totalExpenses")) return;
-
     const totalExpenses = window.expenses.reduce((sum, e) => sum + e.amount, 0);
     const totalRevenue = window.yields.reduce((sum, y) => sum + y.totalRevenue, 0);
     const netProfit = totalRevenue - totalExpenses;
 
-    document.getElementById("totalExpenses").textContent = `₹${totalExpenses.toFixed(2)}`;
-    document.getElementById("totalRevenue").textContent = `₹${totalRevenue.toFixed(2)}`;
-    document.getElementById("netProfit").textContent = `₹${netProfit.toFixed(2)}`;
+    if (document.getElementById("totalExpenses"))
+      document.getElementById("totalExpenses").textContent = `₹${totalExpenses.toFixed(2)}`;
+    if (document.getElementById("totalRevenue"))
+      document.getElementById("totalRevenue").textContent = `₹${totalRevenue.toFixed(2)}`;
+    if (document.getElementById("netProfit"))
+      document.getElementById("netProfit").textContent = `₹${netProfit.toFixed(2)}`;
   }
 
-  // 🔹 Expose functions to global scope
+  // 🔹 Expose to global
   window.toggleExpenseForm = toggleExpenseForm;
   window.handleAddExpense = handleAddExpense;
   window.deleteExpense = deleteExpense;
   window.renderExpensesTable = renderExpensesTable;
+  window.editExpense = editExpense;
+  window.saveEditedExpense = saveEditedExpense;
 
   // 🔹 Initialize
   document.addEventListener("DOMContentLoaded", renderExpensesTable);

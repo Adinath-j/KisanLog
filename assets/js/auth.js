@@ -1,12 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   // -------------------------------
-  // ✅ FARMER REGISTRATION
+  // ✅ FARMER REGISTRATION LOGIC
   // -------------------------------
   const registerForm = document.getElementById("register-form");
-
   if (registerForm) {
-    registerForm.addEventListener("submit", (event) => {
-      event.preventDefault();
+    registerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
 
       const fullName = document.getElementById("fullName").value.trim();
       const email = document.getElementById("email").value.trim();
@@ -25,23 +24,20 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Save user in localStorage
       const user = { fullName, email, mobile, location, password };
       localStorage.setItem("registeredUser", JSON.stringify(user));
-
       alert("✅ Registration successful! You can now log in.");
       window.location.replace("login.html");
     });
   }
 
   // -------------------------------
-  // ✅ FARMER LOGIN
+  // ✅ FARMER LOGIN LOGIC
   // -------------------------------
-  const loginForm = document.querySelector("form[onsubmit='loginUser(event)']");
-
+  const loginForm = document.getElementById("login-form");
   if (loginForm) {
-    window.loginUser = (event) => {
-      event.preventDefault();
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
 
       const email = document.getElementById("loginEmail").value.trim();
       const password = document.getElementById("loginPassword").value;
@@ -55,41 +51,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (email === storedUser.email && password === storedUser.password) {
         alert(`Welcome back, ${storedUser.fullName}!`);
-        // ✅ Unified login key
-        localStorage.setItem("loggedInUser", storedUser.fullName);
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify({ fullName: storedUser.fullName, email, isLoggedIn: true })
+        );
         window.location.replace("dashboard/index.html");
       } else {
-        alert("Invalid email or password. Please try again.");
+        alert("Invalid email or password.");
       }
-    };
+    });
   }
 
   // -------------------------------
   // ✅ DASHBOARD SESSION CHECK
   // -------------------------------
   if (window.location.pathname.includes("dashboard/index.html")) {
-    const user = localStorage.getItem("loggedInUser");
-
-    if (!user) {
+    const loggedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!loggedUser || !loggedUser.isLoggedIn) {
       alert("Please log in to access the dashboard.");
       window.location.replace("../login.html");
       return;
     }
 
-    // Optional: dynamically add logout button
-    const header = document.querySelector(".header");
-    if (header && !document.querySelector(".logout-btn")) {
-      const logoutBtn = document.createElement("button");
-      logoutBtn.textContent = "🚪 Logout";
-      logoutBtn.classList.add("export-btn", "logout-btn");
-      logoutBtn.style.background = "#c62828";
-      logoutBtn.style.marginLeft = "10px";
-      logoutBtn.onclick = () => {
-        localStorage.removeItem("loggedInUser");
-        alert("Logged out successfully!");
-        window.location.replace("../login.html");
-      };
-      header.appendChild(logoutBtn);
-    }
+    // Display welcome text
+    const welcomeText = document.getElementById("welcomeText");
+    if (welcomeText) welcomeText.textContent = `Welcome, ${loggedUser.fullName}! 👋`;
+
+    // Logout function
+    window.logoutUser = function () {
+      localStorage.removeItem("loggedInUser");
+      alert("You have been logged out!");
+      window.location.replace("../login.html");
+    };
+
+    // Home function (default to expenses)
+    window.goHome = function () {
+      const firstTab = document.querySelector(".tab[data-tab='expenses.html']");
+      if (firstTab) firstTab.click();
+    };
   }
 });
