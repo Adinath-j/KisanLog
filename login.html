@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/css/auth.css" />
 </head>
 <body>
+  
   <div class="auth-container">
     <h2>Login</h2>
     <div id="notification" class="notification"></div>
@@ -17,16 +18,18 @@
       <button type="submit" class="btn">Login</button>
     </form>
 
-    <p>Don't have an account? <a href="register.html">Register</a></p>
+    <p>Don't have an account? <a href="register.html">Register</a></p><p class="form-link">
+        <a href="home.html">Go to Home</a>
+      </p>
   </div>
 
   <script src="assets/js/auth.js"></script>
   <script>
-    // If already logged in, go directly to dashboard
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (user && user.isLoggedIn) {
       window.location.replace("dashboard/index.html");
     }
   </script>
+
 </body>
 </html>

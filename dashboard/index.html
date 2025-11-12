@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard | Farm Tracker</title>
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <!-- Chart and PDF libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -48,34 +50,42 @@
 
     <div id="tabContent" class="tab-content"></div>
   </div>
-<script src="../assets/js/main.js"></script>
-<script src="../assets/js/export.js"></script>
+
+  <!-- ✅ load shared.js first so SharedStorage is defined globally -->
+  <script src="../assets/js/shared.js"></script>
+
+  <!-- ✅ then your functional modules -->
+  <script src="../assets/js/expenses.js"></script>
+  <script src="../assets/js/yields.js"></script>
+  <script src="../assets/js/graphs.js"></script>
+  <script src="../assets/js/export.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <!-- ✅ finally, dashboard session + utility logic -->
+  <!-- ✅ final version of goHome() -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const user = localStorage.getItem("loggedInUser");
-
+    const user = JSON.parse(localStorage.getItem("loggedInUser") || "null");
     if (!user) {
       window.location.replace("../login.html");
       return;
     }
 
-    // document.getElementById("welcomeText").textContent = `Welcome, ${user}! 👋`;
+    document.getElementById("welcomeText").textContent = `Welcome, ${user.fullName}! 👋`;
 
-    window.logoutUser = function() {
+    window.logoutUser = function () {
       localStorage.removeItem("loggedInUser");
       alert("You have been logged out!");
       window.location.replace("../login.html");
     };
 
-    window.goHome = function() {
-      const expensesTab = document.querySelector('.tab[data-tab="expenses.html"]');
-      if (expensesTab) expensesTab.click();
+    // ✅ Redirect to landing page instead of switching tabs
+    window.goHome = function () {
+      window.location.href = "../home.html";
     };
   });
 </script>
-<script src="../assets/js/shared.js"></script>
-<script src="../assets/js/main.js"></script>
-<script src="../assets/js/export.js"></script>
 
 </body>
 </html>
+  

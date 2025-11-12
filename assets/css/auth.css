@@ -14,8 +14,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 80px; 
 }
-
+::-webkit-scrollbar{
+  display: none;
+}
 /* 🌾 Auth Form Container */
 .auth-container,
 .form-container {
@@ -123,7 +126,16 @@ a:hover {
 .notification.show {
   display: block;
 }
-
+.auth-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px 40px;
+  z-index: 100;
+}
 /* 🌈 Fade Animation */
 @keyframes fadeIn {
   from {

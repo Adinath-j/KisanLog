@@ -1,0 +1,205 @@
+/* 🌿 Home Page Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f1f8f6;
+  color: #2e7d32;
+  overflow-x: hidden;
+}
+
+/* ---------------- Navbar ---------------- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 50px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.7em;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #2e7d32;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #1b5e20;
+}
+
+/* Auth Buttons in Navbar */
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  background: #2e7d32;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #1b5e20;
+}
+
+.btn.secondary {
+  background: #64b5f6;
+}
+.btn.secondary:hover {
+  background: #1976d2;
+}
+
+/* ---------------- Hero Section ---------------- */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 80px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  min-height: 80vh;
+}
+
+.hero-content {
+  max-width: 600px;
+}
+
+.hero-content h1 {
+  font-size: 2.8em;
+  margin-bottom: 15px;
+  color: #1b5e20;
+}
+
+.hero-content p {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 25px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.hero-image img {
+  width: 550px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------- Sections ---------------- */
+.section {
+  padding: 70px 80px;
+  text-align: center;
+  background: white;
+}
+
+.section:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.section h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #2e7d32;
+}
+
+.section p {
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ---------------- Features ---------------- */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 40px;
+}
+
+.feature-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.feature-card h3 {
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+/* ---------------- Contact Section ---------------- */
+.contact button {
+  margin-top: 20px;
+}
+
+/* ---------------- Footer ---------------- */
+.footer {
+  text-align: center;
+  padding: 25px;
+  background: #2e7d32;
+  color: white;
+  font-size: 15px;
+  margin-top: 40px;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-image img {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
