@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Farm Tracker</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Farm Input Expense Tracker</h1>
+        <p id="welcomeText"></p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn secondary" onclick="goHome()">🏠 Home</button>
+        <button class="btn secondary" onclick="logoutUser()">🚪 Logout</button>
+        <button class="export-btn" onclick="exportToCSV()">📥 Export Report</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card expenses">
+        <div class="stat-label" style="color:#c62828;">Total Expenses</div>
+        <div class="stat-value" style="color:#b71c1c;" id="totalExpenses">₹0.00</div>
+      </div>
+      <div class="stat-card revenue">
+        <div class="stat-label" style="color:#1565c0;">Total Revenue</div>
+        <div class="stat-value" style="color:#0d47a1;" id="totalRevenue">₹0.00</div>
+      </div>
+      <div class="stat-card profit" id="profitCard">
+        <div class="stat-label" id="profitLabel">Net Profit</div>
+        <div class="stat-value" id="netProfit">₹0.00</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="expenses.html">Expenses</button>
+      <button class="tab" data-tab="yields.html">Yields</button>
+      <button class="tab" data-tab="analysis.html">Analysis</button>
+      <button class="tab" data-tab="graphs.html">Graphs</button>
+    </div>
+
+    <div id="tabContent" class="tab-content"></div>
+  </div>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/export.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const user = localStorage.getItem("loggedInUser");
+
+    if (!user) {
+      window.location.replace("../login.html");
+      return;
+    }
+
+    document.getElementById("welcomeText").textContent = `Welcome, ${user}! 👋`;
+
+    window.logoutUser = function() {
+      localStorage.removeItem("loggedInUser");
+      alert("You have been logged out!");
+      window.location.replace("../login.html");
+    };
+
+    window.goHome = function() {
+      const expensesTab = document.querySelector('.tab[data-tab="expenses.html"]');
+      if (expensesTab) expensesTab.click();
+    };
+  });
+</script>
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/export.js"></script>
+
+</body>
+</html>
