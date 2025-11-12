@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Input Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1>Farm Input Expense Tracker</h1>
+                <p>Track expenses, manage yields, and analyze profitability</p>
+            </div>
+            <button class="export-btn" onclick="exportToCSV()">
+                <span>📥</span> Export Report
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card expenses">
+                <div class="stat-label" style="color: #c62828;">Total Expenses</div>
+                <div class="stat-value" style="color: #b71c1c;" id="totalExpenses">₹0.00</div>
+            </div>
+            <div class="stat-card revenue">
+                <div class="stat-label" style="color: #1565c0;">Total Revenue</div>
+                <div class="stat-value" style="color: #0d47a1;" id="totalRevenue">₹0.00</div>
+            </div>
+            <div class="stat-card profit" id="profitCard">
+                <div class="stat-label" id="profitLabel">Net Profit</div>
+                <div class="stat-value" id="netProfit">₹0.00</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('expenses')">Expenses</button>
+            <button class="tab" onclick="switchTab('yields')">Yields</button>
+            <button class="tab" onclick="switchTab('analysis')">Analysis</button>
+            <button class="tab" onclick="switchTab('graphs')">Graphs</button>
+        </div>
+
+        <!-- Expenses Tab -->
+        <div id="expensesTab" class="tab-content active">
+            <div class="section-header">
+                <h2>Expense Records</h2>
+                <button class="add-btn" onclick="toggleExpenseForm()">
+                    <span id="expenseFormToggle">➕</span> <span id="expenseFormText">Add Expense</span>
+                </button>
+            </div>
+
+            <!-- Expense Form -->
+            <div id="expenseForm" class="form-container" style="display: none;">
+                <h3 id="expenseFormTitle">Add New Expense</h3>
+                <div class="form-grid">
+                    <input type="date" id="expenseDate" class="form-input">
+                    <input type="text" id="expenseCrop" placeholder="Crop Name" class="form-input">
+                    <select id="expenseCategory" class="form-input">
+                        <option value="Seeds">Seeds</option>
+                        <option value="Fertilizers">Fertilizers</option>
+                        <option value="Pesticides">Pesticides</option>
+                        <option value="Fuel">Fuel</option>
+                        <option value="Labor">Labor</option>
+                        <option value="Equipment">Equipment</option>
+                        <option value="Water">Water</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input type="text" id="expenseDescription" placeholder="Description" class="form-input">
+                    <input type="number" id="expenseAmount" placeholder="Amount (₹)" class="form-input" step="0.01">
+                    <button class="submit-btn" onclick="handleAddExpense()">
+                        <span id="expenseSubmitText">Add Expense</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Expenses Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Crop</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th style="text-align: right;">Amount</th>
+                            <th style="text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expensesTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #999; padding: 40px;">
+                                No expenses recorded yet
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Yields Tab -->
+        <div id="yieldsTab" class="tab-content">
+            <div class="section-header">
+                <h2>Yield Records</h2>
+                <button class="add-btn" onclick="toggleYieldForm()">
+                    <span id="yieldFormToggle">➕</span> <span id="yieldFormText">Add Yield</span>
+                </button>
+            </div>
+
+            <!-- Yield Form -->
+            <div id="yieldForm" class="form-container" style="display: none;">
+                <h3 id="yieldFormTitle">Add New Yield</h3>
+                <div class="form-grid">
+                    <input type="date" id="yieldDate" class="form-input">
+                    <input type="text" id="yieldCrop" placeholder="Crop Name" class="form-input">
+                    <input type="number" id="yieldQuantity" placeholder="Quantity" class="form-input" step="0.01">
+                    <select id="yieldUnit" class="form-input">
+                        <option value="kg">kg</option>
+                        <option value="tons">tons</option>
+                        <option value="bags">bags</option>
+                        <option value="liters">liters</option>
+                        <option value="units">units</option>
+                    </select>
+                    <input type="number" id="yieldPrice" placeholder="Price per Unit (₹)" class="form-input" step="0.01">
+                    <button class="submit-btn blue" onclick="handleAddYield()">
+                        <span id="yieldSubmitText">Add Yield</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Yields Table -->
+            <div class="table-container">
+                <table>
+                    <thead class="blue-header">
+                        <tr>
+                            <th>Date</th>
+                            <th>Crop</th>
+                            <th style="text-align: right;">Quantity</th>
+                            <th style="text-align: right;">Price/Unit</th>
+                            <th style="text-align: right;">Total Revenue</th>
+                            <th style="text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="yieldsTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #999; padding: 40px;">
+                                No yield records yet
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analysis Tab -->
+        <div id="analysisTab" class="tab-content">
+            <h2>Crop Profitability Analysis</h2>
+            <div class="table-container">
+                <table>
+                    <thead class="purple-header">
+                        <tr>
+                            <th>Crop</th>
+                            <th style="text-align: right;">Total Expenses</th>
+                            <th style="text-align: right;">Total Revenue</th>
+                            <th style="text-align: right;">Net Profit</th>
+                            <th style="text-align: right;">Profit Margin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analysisTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #999; padding: 40px;">
+                                No data available for analysis
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Graphs Tab -->
+        <div id="graphsTab" class="tab-content">
+            <div class="chart-section">
+                <h2>Expenses Over Time</h2>
+                <canvas id="expensesTimeChart"></canvas>
+            </div>
+            <div class="chart-section">
+                <h2>Expenses by Category</h2>
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chart-section">
+                <h2>Crop Comparison</h2>
+                <canvas id="cropComparisonChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- jsPDF + autoTable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
