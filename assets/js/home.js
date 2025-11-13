@@ -1,6 +1,5 @@
-// ✅ assets/js/home.js
+// ------------------------- LOGIN / SIGNUP LOGIC -------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  // Get user from localStorage
   const user = JSON.parse(localStorage.getItem("loggedInUser") || "null");
 
   const loginBtnNav = document.getElementById("loginBtnNav");
@@ -9,52 +8,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupBtnHero = document.getElementById("signupBtnHero");
   const authContainers = document.querySelectorAll(".auth-buttons");
 
-  // ✅ If user already logged in → hide login/signup and show dashboard button
   if (user) {
-    [loginBtnNav, signupBtnNav, loginBtnHero, signupBtnHero].forEach(btn => {
-      if (btn) btn.style.display = "none";
-    });
+    [loginBtnNav, signupBtnNav, loginBtnHero, signupBtnHero].forEach(
+      btn => btn && (btn.style.display = "none")
+    );
 
     authContainers.forEach(container => {
       const dashBtn = document.createElement("button");
       dashBtn.textContent = "Go to Dashboard";
       dashBtn.classList.add("btn", "secondary");
-      dashBtn.addEventListener("click", () => {
-        window.location.href = "dashboard/index.html";
-      });
+      dashBtn.onclick = () => (window.location.href = "dashboard/index.html");
       container.appendChild(dashBtn);
     });
   } else {
-    // 🧩 Normal visitors: wire up login/signup navigation
-    loginBtnNav?.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-    signupBtnNav?.addEventListener("click", () => {
-      window.location.href = "register.html";
-    });
-    loginBtnHero?.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-    signupBtnHero?.addEventListener("click", () => {
-      window.location.href = "register.html";
-    });
+    loginBtnNav.onclick = () => (window.location.href = "login.html");
+    signupBtnNav.onclick = () => (window.location.href = "register.html");
+    loginBtnHero.onclick = () => (window.location.href = "login.html");
+    signupBtnHero.onclick = () => (window.location.href = "register.html");
   }
 
-  // 🌿 Explore button scrolls to “Features” section smoothly
-  const exploreBtn = document.getElementById("exploreBtn");
-  exploreBtn?.addEventListener("click", () => {
-    const featuresSection = document.getElementById("features");
-    if (featuresSection) {
-      window.scrollTo({
-        top: featuresSection.offsetTop - 60,
-        behavior: "smooth",
-      });
-    }
-  });
-
-  // 📩 Contact button action
-  const contactBtn = document.getElementById("contactBtn");
-  contactBtn?.addEventListener("click", () => {
+  document.getElementById("contactBtn").onclick = () =>
     alert("📩 Contact us at support@farmtrack.in");
-  });
+});
+
+// ------------------------- NAVBAR SCROLL EFFECT -------------------------
+window.addEventListener("scroll", () => {
+  document.querySelector(".navbar")
+    .classList.toggle("scrolled", window.scrollY > 50);
 });
