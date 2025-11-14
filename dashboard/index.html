@@ -51,6 +51,27 @@
     <div id="tabContent" class="tab-content"></div>
   </div>
 
+  <!-- ✅ Chatbot Integration -->
+  <link rel="stylesheet" href="../static/chatBotstyle.css">
+  
+  <!-- Floating Chat Button -->
+  <div id="chatbot-button" onclick="toggleChat()">💬</div>
+
+  <!-- Chat Window -->
+  <div id="chatbot-window">
+    <div id="chatbot-header">
+      Smart Farm Assistant
+      <span onclick="toggleChat()" style="cursor:pointer;">✖</span>
+    </div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask something...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  
+  <script src="../static/chatBotscript.js"></script>
+
   <!-- ✅ load shared.js first so SharedStorage is defined globally -->
   <script src="../assets/js/shared.js"></script>
 
@@ -64,6 +85,37 @@
   <!-- ✅ finally, dashboard session + utility logic -->
   <!-- ✅ final version of goHome() -->
 <script>
+  // ✅ Update dashboard cards with user data
+  function updateDashboardCards() {
+    // Get user data using SharedStorage
+    const allData = window.SharedStorage.loadAll();
+    const expenses = allData.expenses;
+    const yields = allData.yields;
+    
+    // Calculate totals
+    const totalExpenses = expenses.reduce((sum, exp) => sum + (parseFloat(exp.amount) || 0), 0);
+    const totalRevenue = yields.reduce((sum, yld) => sum + (parseFloat(yld.totalRevenue) || 0), 0);
+    const netProfit = totalRevenue - totalExpenses;
+    
+    // Update card values
+    document.getElementById("totalExpenses").textContent = `₹${totalExpenses.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById("totalRevenue").textContent = `₹${totalRevenue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById("netProfit").textContent = `₹${netProfit.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    // Update profit card color based on profit/loss
+    const profitCard = document.getElementById("profitCard");
+    const profitLabel = document.getElementById("profitLabel");
+    if (netProfit >= 0) {
+      profitCard.style.backgroundColor = "#c8e6c9";
+      profitLabel.textContent = "📈 Net Profit";
+      profitLabel.style.color = "#2e7d32";
+    } else {
+      profitCard.style.backgroundColor = "#ffcdd2";
+      profitLabel.textContent = "📉 Net Loss";
+      profitLabel.style.color = "#c62828";
+    }
+  }
+  
   document.addEventListener("DOMContentLoaded", () => {
     const user = JSON.parse(localStorage.getItem("loggedInUser") || "null");
     if (!user) {
@@ -72,16 +124,19 @@
     }
 
     document.getElementById("welcomeText").textContent = `Welcome, ${user.fullName}! 👋`;
+    
+    // Update dashboard cards when page loads
+    updateDashboardCards();
 
     window.logoutUser = function () {
       localStorage.removeItem("loggedInUser");
       alert("You have been logged out!");
-      window.location.replace("../login.html");
+      window.location.replace("/login.html");
     };
 
     // ✅ Redirect to landing page instead of switching tabs
     window.goHome = function () {
-      window.location.href = "../home.html";
+      window.location.href = "/";
     };
   });
 </script>

@@ -173,6 +173,12 @@ body {
     width: 100%;
 }
 
+#navAuthButton {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .btn-login {
     background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
     color: white;
@@ -185,11 +191,22 @@ body {
     gap: 8px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    border: none;
+    cursor: pointer;
 }
 
 .btn-login:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 25px rgba(34, 197, 94, 0.4);
+}
+
+.btn-login[style*="background: #d32f2f"] {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-login[style*="background: #d32f2f"]:hover {
+    box-shadow: 0 6px 25px rgba(239, 68, 68, 0.4);
 }
 
 /* Hero Section */

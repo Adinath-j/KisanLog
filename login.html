@@ -18,8 +18,8 @@
       <button type="submit" class="btn">Login</button>
     </form>
 
-    <p>Don't have an account? <a href="register.html">Register</a></p><p class="form-link">
-        <a href="home.html">Go to Home</a>
+    <p>Don't have an account? <a href="/register.html">Register</a></p><p class="form-link">
+        <a href="/">Go to Home</a>
       </p>
   </div>
 
@@ -27,7 +27,7 @@
   <script>
     const user = JSON.parse(localStorage.getItem("loggedInUser"));
     if (user && user.isLoggedIn) {
-      window.location.replace("dashboard/index.html");
+      window.location.replace("/dashboard/index.html");
     }
   </script>
 

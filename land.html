@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farm Input Expense Tracker - Manage Your Farm Finances</title>
-    <link rel="stylesheet" href="assets/css/home.css" />
+    <link rel="stylesheet" href="assets/css/land.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -24,10 +24,12 @@
                     <li><a href="#how-it-works">How It Works</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <a href="login.html" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>Login</span>
-                </a>
+                <div id="navAuthButton">
+                    <a href="/login.html" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
@@ -48,7 +50,7 @@
                 <h1 class="animate-fade-in">Track Every Expense,<br><span class="highlight">Maximize Every Harvest</span></h1>
                 <p class="hero-subtitle animate-fade-in-delay">Stop losing track of your farm expenses. Monitor inputs, calculate profits, and grow your farming business with data-driven insights.</p>
                 <div class="hero-buttons animate-slide-up">
-                    <a href="login.html" class="btn-primary">
+                    <a href="/login.html" class="btn-primary">
                         <span>Get Started Free</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
@@ -392,7 +394,7 @@
                 </div>
                 <h2>Ready to Take Control of Your Farm Finances?</h2>
                 <p>Join thousands of farmers who are already tracking smarter and earning more.</p>
-                <a href="login.html" class="btn-primary-large">
+                <a href="/login.html" class="btn-primary-large">
                     <span>Start Tracking Now - It's Free</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
@@ -439,7 +441,7 @@
                         <li><a href="#features">Features</a></li>
                         <li><a href="#benefits">Benefits</a></li>
                         <li><a href="#how-it-works">How It Works</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="/login.html">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -469,6 +471,56 @@
             </div>
         </div>
     </footer>
-    <script src="assets/js/home.js"></script>
+    
+    <!-- ✅ Chatbot Integration -->
+    <link rel="stylesheet" href="static/chatBotstyle.css">
+    
+    <!-- Floating Chat Button -->
+    <div id="chatbot-button" onclick="toggleChat()">💬</div>
+
+    <!-- Chat Window -->
+    <div id="chatbot-window">
+      <div id="chatbot-header">
+        Smart Farm Assistant
+        <span onclick="toggleChat()" style="cursor:pointer;">✖</span>
+      </div>
+      <div id="chatbot-messages"></div>
+      <div id="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Ask something...">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+    
+    <script src="static/chatBotscript.js"></script>
+    <script src="assets/js/land.js"></script>
+    
+    <!-- ✅ Authentication Check - Update navbar button -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        const navAuthButton = document.getElementById("navAuthButton");
+        
+        if (user && user.isLoggedIn) {
+          // Replace Login button with Dashboard button
+          navAuthButton.innerHTML = `
+            <a href="/dashboard/index.html" class="btn-login">
+              <i class="fas fa-th-large"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="#" onclick="logoutFromLand(event)" class="btn-login" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </a>
+          `;
+        }
+      });
+      
+      function logoutFromLand(event) {
+        event.preventDefault();
+        localStorage.removeItem("loggedInUser");
+        alert("You have been logged out!");
+        window.location.href = "/login.html";
+      }
+    </script>
 </body>
 </html>

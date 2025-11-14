@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const tabs = document.querySelectorAll(".tab");
   const tabContent = document.getElementById("tabContent");
 
-  // Initialize data globally
-  window.expenses = JSON.parse(localStorage.getItem("farmExpenses") || "[]");
-  window.yields = JSON.parse(localStorage.getItem("farmYields") || "[]");
+  // Initialize data using SharedStorage (user-specific keys)
+  const allData = window.SharedStorage.loadAll();
+  window.expenses = allData.expenses;
+  window.yields = allData.yields;
 
   // Default tab: Expenses
   loadTab("expenses.html", "../assets/js/expenses.js", "expenses");

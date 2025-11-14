@@ -1,7 +1,14 @@
 (function () {
-  // Ensure shared arrays exist globally
-  window.yields = JSON.parse(localStorage.getItem("farmYields") || "[]");
-  window.expenses = JSON.parse(localStorage.getItem("farmExpenses") || "[]");
+  // Load data using SharedStorage for user-specific access
+  let allData = window.SharedStorage.loadAll();
+  window.yields = allData.yields;
+  window.expenses = allData.expenses;
+
+  // 🔹 Save data using SharedStorage
+  function saveData() {
+    window.SharedStorage.saveExpenses(window.expenses);
+    window.SharedStorage.saveYields(window.yields);
+  }
 
   // 🔹 Toggle Yield Form
   function toggleYieldForm() {
@@ -171,21 +178,37 @@
 
   // 🔹 Save Data to LocalStorage
   function saveData() {
-    localStorage.setItem("farmYields", JSON.stringify(window.yields));
-    localStorage.setItem("farmExpenses", JSON.stringify(window.expenses));
+    window.SharedStorage.saveExpenses(window.expenses);
+    window.SharedStorage.saveYields(window.yields);
   }
 
   // 🔹 Update Dashboard Summary
   function updateDashboard() {
     if (!document.getElementById("totalRevenue")) return;
 
-    const totalExpenses = window.expenses.reduce((sum, e) => sum + e.amount, 0);
-    const totalRevenue = window.yields.reduce((sum, y) => sum + y.totalRevenue, 0);
+    const totalExpenses = window.expenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
+    const totalRevenue = window.yields.reduce((sum, y) => sum + (parseFloat(y.totalRevenue) || 0), 0);
     const netProfit = totalRevenue - totalExpenses;
 
-    document.getElementById("totalExpenses").textContent = `₹${totalExpenses.toFixed(2)}`;
-    document.getElementById("totalRevenue").textContent = `₹${totalRevenue.toFixed(2)}`;
-    document.getElementById("netProfit").textContent = `₹${netProfit.toFixed(2)}`;
+    // Update card values with proper formatting
+    document.getElementById("totalExpenses").textContent = `₹${totalExpenses.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById("totalRevenue").textContent = `₹${totalRevenue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById("netProfit").textContent = `₹${netProfit.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    // Update profit card color and label
+    const profitCard = document.getElementById("profitCard");
+    const profitLabel = document.getElementById("profitLabel");
+    if (profitCard && profitLabel) {
+      if (netProfit >= 0) {
+        profitCard.style.backgroundColor = "#c8e6c9";
+        profitLabel.textContent = "📈 Net Profit";
+        profitLabel.style.color = "#2e7d32";
+      } else {
+        profitCard.style.backgroundColor = "#ffcdd2";
+        profitLabel.textContent = "📉 Net Loss";
+        profitLabel.style.color = "#c62828";
+      }
+    }
   }
 
   // 🔹 Expose Functions Globally
